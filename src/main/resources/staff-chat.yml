@@ -1,0 +1,8 @@
+enabled: true
+
+# PlaceholderAPI is also supported! <papi:YOUR_PLACEHOLDERAPI_PLACEHOLDER>
+format: "<#34ebd8>Staff <gray>| <papi:luckperms_prefix> <player><gray>: <white><message>"
+
+messages:
+  enabled: "<#34ebd8>Staff <gray>| <white>Staff chat is enabled!"
+  disabled: "<#34ebd8>Staff <gray>| <white>Staff chat is disabled!"

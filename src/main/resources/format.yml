@@ -1,0 +1,18 @@
+# PlaceholderAPI is also supported! <papi:YOUR_PLACEHOLDERAPI_PLACEHOLDER>
+
+format:
+  # If no group was found for the player, this format will be used.
+  default:
+    format: "<gray><papi:luckperms_prefix> <papi:player_name>: <white><message>"
+    click:
+      enabled: true
+      action: "SUGGEST_COMMAND" # or "RUN_COMMAND", "OPEN_URL", "OPEN_FILE", "COPY_TO_CLIPBOARD"
+      command: "/msg %player_name%"
+    hover:
+      enabled: true
+      message:
+        - "<gray>Click to DM <papi:player_name>"
+
+  # group name
+  admin:
+    format: "<dark_red><papi:luckperms_prefix> <papi:player_name>: <red><message>"

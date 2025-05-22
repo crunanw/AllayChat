@@ -1,0 +1,44 @@
+flood:
+  enabled: true
+  max-repeating: 10
+  max-message-length: 50
+  message: "<prefix> <red>You can not flood the chat."
+
+domain:
+  enabled: true
+  message: "<prefix> <red>You can not send domains in the chat."
+
+phone:
+  enabled: true
+  message: "<prefix> <red>You can not send phone numbers."
+
+ip:
+  enabled: true
+  message: "<prefix> <red>You can not send IP addresses."
+
+similarity:
+  enabled: true
+  max-time-between: 60 # in seconds
+  distance: 3 # in characters, the distance between the two messages. allay uses levenshtein distance.
+  messages-to-check: 5 # the number of messages to check for similarity
+  message: "<prefix> <red>Your messages seems similar."
+
+cooldown:
+  enabled: true
+  seconds: 3 # the cooldown time in seconds
+  message: "<prefix> <red>You must wait at least 3 seconds before sending another message."
+
+caps:
+  enabled: true
+  max-caps: 5 # the maximum number of caps in a message
+  message: "<prefix> <red>You are using too much caps."
+
+regex:
+  enabled: true
+
+  message: "<prefix> <red>Your message contains a forbidden word."
+
+  # don't know how to generate regexes? me neither.
+  # use gemini 2.5 thinking (or flash). it is powerful and can generate regexes for you.
+  regex-list:
+    - '\b(?i)(?:(?:f|ph|ƒ)+[\W_]*[uμv0\*@\!\#\$\%\^\&\.]+[\W_]*[c¢©kx]+[\W_]*[kx]+)\b' # regex for "fuck"

@@ -1,0 +1,24 @@
+messages:
+  prefix: "<#34ebd8>Allay <gray>|"
+
+  invalid-command: "<prefix> <red>Invalid command."
+  no-permission: "<prefix> <red>You do not have permission to use this."
+
+  message-cancelled-operator: "<dark_red>[X] <dark_gray>[<#34ebd8><flag><dark_gray>] <gray><player>: <message>"
+
+  reloaded: "<prefix> <white>Reloaded successfully."
+
+  inventory-load-failed: "<prefix> <red>Failed to load inventory."
+  inventory-not-found: "<prefix> <red>Inventory not found."
+
+  spy-enabled: "<prefix> <white>Spy mode enabled."
+  spy-disabled: "<prefix> <white>Spy mode disabled."
+
+  ignore-added: "<prefix> <white>You are now ignoring <#34ebd8><player><white>."
+  ignore-removed: "<prefix> <white>You are no longer ignoring <#34ebd8><player><white>."
+
+  ignore-self: "<prefix> <red>You can not ignore yourself."
+
+  ignoring: "<prefix> <white>You are ignoring <#34ebd8><player> <white>and you can not send messages to them."
+  # Only a thing in single-server instances.
+  ignoring-you: "<prefix> <white><#34ebd8><player> <white>is ignoring you. Your message has not been delivered."

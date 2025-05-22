@@ -1,0 +1,18 @@
+database:
+  type: sqlite # Database type (mysql (works on mariadb as well), sqlite)
+
+  host: "127.0.0.1"
+  port: "3306"
+  database: allaychat
+  user: allaychat_user
+  password: testpass
+
+  users-table: "allay_users"
+  ignored-table: "allay_ignored"
+
+  # HikariCP Settings
+  # Do not change these unless you know what you're doing
+  max-lifetime: 30000
+  idle-timeout: 10000
+  pool-size: 20
+  min-idle: 5

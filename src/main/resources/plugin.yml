@@ -1,0 +1,12 @@
+name: AllayChat
+version: '1.0.0-SNAPSHOT'
+main: net.voxelarc.allaychat.AllayChatPlugin
+api-version: '1.19'
+authors: [ hyperion ]
+depend:
+  - PlaceholderAPI
+  - LuckPerms
+libraries:
+  - "com.zaxxer:HikariCP:6.3.0"
+  - "org.mariadb.jdbc:mariadb-java-client:3.5.3"
+  - "io.lettuce:lettuce-core:6.6.0.RELEASE"

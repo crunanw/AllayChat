@@ -1,0 +1,5 @@
+main: net.voxelarc.allaychat.ai.AIModule
+name: 'AIFilter'
+description: 'Provides AI Filter functionality for AllayChat.'
+version: '1.0.0'
+author: 'hyperion'

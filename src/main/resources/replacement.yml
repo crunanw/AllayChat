@@ -1,0 +1,59 @@
+inventory:
+  enabled: true
+  syntax: "[inventory]"
+  text: "<dark_gray>[<#34ebd8>Inventory of <player><dark_gray>]"
+  hover: "<#34ebd8>Click to see <player>'s inventory!"
+  gui-title: "<dark_gray>Inventory of <player>"
+
+item:
+  enabled: true
+  syntax: "[item]"
+  text: "<dark_gray>[<#34ebd8><amount>x <item><dark_gray>]" # <player> placeholder can also be used
+
+# This is a special case, item replacement will not work fully for shulkers.
+shulker:
+  enabled: true
+  syntax: "[shulker]"
+  text: "<dark_gray>[<#34ebd8>Shulker of <player><dark_gray>]"
+  hover: "<#34ebd8>Click to see <player>'s shulker!"
+  gui-title: "<dark_gray>Shulker of <player>"
+
+enderchest:
+  enabled: true
+  syntax: "[enderchest]"
+  text: "<dark_gray>[<#34ebd8>Enderchest of <player><dark_gray>]"
+  hover: "<#34ebd8>Click to see <player>'s enderchest!"
+  gui-title: "<dark_gray>Enderchest of <player>"
+
+mention:
+  enabled: true
+  text: "<#34ebd8>@<player>" # replacement
+
+  sound: "block.note_block.pling" # keep it empty to disable sound
+  actionbar: "<#34ebd8><player> <white>mentioned you in chat!" # keep it empty to disable actionbar
+  message: "<prefix> <#34ebd8><player> <white>mentioned you in chat!" # keep it empty to disable message
+
+  title:
+    enabled: true
+    title: "<#34ebd8><bold>MENTION"
+    subtitle: "<#34ebd8><player> <white>mentioned you in chat!"
+
+placeholder:
+  enabled: true
+  # Does not support PlaceholderAPI
+  # Only supports MiniMessage
+  # We cache the components for better performance
+  # That's why we use separate setting for per-player
+  # Placeholders are cached, per-player placeholders are not and created on the fly
+  # This is a micro optimization to avoid creating the same component multiple times
+  placeholders:
+    ":)": "ツ"
+    ":(": "☹"
+    "<3": "♥"
+    "[i]": "[item]"
+    "[ec]": "[enderchest]"
+    "[inv]": "[inventory]"
+
+  # Supports MiniMessage and PlaceholderAPI
+  per-player:
+    "[playtime]": "<dark_gray>[<#34ebd8><papi:player_name>'s Playtime: <papi:statistic_time_played><dark_gray>]"

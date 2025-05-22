@@ -1,0 +1,11 @@
+enabled: true
+
+filter: true # should filters be applied to private messages?
+
+messages:
+  not-found: "<prefix> <red>Player not found."
+  self: "<prefix> <red>You can not message yourself."
+  format-target: "<#34ebd8><player> <gray>-> <#34ebd8>You<gray>: <white><message>"
+  format-self: "<#34ebd8>You <gray>-> <#34ebd8><player><gray>: <white><message>"
+  no-reply: "<prefix> <red>You have no one to reply to :("
+  spy: "<dark_gray>[<#34ebd8>SPY<dark_gray>] <#34ebd8><from> <gray>-> <#34ebd8><to><gray>: <white><message>"

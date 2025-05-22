@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.voxelarc.allaychat'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
+    compileOnly ("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT") { exclude group: "com.google.code.gson" }
+}
