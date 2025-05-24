@@ -63,9 +63,9 @@ Cross-Server feature itself is not included in this repository.\
 It is a separate JAR, you put it inside AllayChat/modules.
 
 ## 🔒 Open Source Does Not Mean Free
-AllayChat is an open source project, but it does not mean that it is free.\
-If you want to use AllayChat, you need to pay for it.\
-[You can buy it on BuiltByBit](https://google.com)
+AllayChat is an open source project.\
+Please consider buying it so we can actually continue updating.\
+[Buy it on BuiltByBit](https://google.com)
 
 No support will be provided for users who do not pay for AllayChat.\
 And no, we do not help you build AllayChat from source if you do not pay for it.
