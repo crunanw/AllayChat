@@ -27,8 +27,25 @@ Allay is designed to be compatible with almost any plugin.\
 We use Paper's ChatRenderer to render messages. It means that Allay will not break your existing plugins.\
 (as long as your plugin does not do anything weird or outdated)
 
-However, we do not support use of any 3rd party chat (including coloring and formatting) plugin.\
-If you are a developer and want to support Allay, feel free to contribute.
+Developer API
+```gradle
+repositories {
+    maven {
+        name "voxelarc-releases"
+        url "https://repo.voxelarc.net/releases"
+    }
+    /*
+    maven {
+        name "voxelarc-snapshots"
+        url "https://repo.voxelarc.net/snapshots"
+    }
+    */
+}
+
+dependencies {
+    compileOnly 'net.voxelarc.allaychat:api:VERSION'
+}
+```
 
 ## 🔮 Cross-Server
 
