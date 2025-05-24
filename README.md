@@ -9,8 +9,6 @@ I have no plans to add it in the future either.\
 I have never seen anyone use it and I don't see a reason to add it.\
 It just complicates the chat system and makes it harder to manage.
 
--------------------
-
 ## 🚀 Features
 - Custom chat filters
 - Custom chat formats
@@ -23,7 +21,6 @@ It just complicates the chat system and makes it harder to manage.
 - Private messaging
 - Spy
 - And more
--------------------
 
 ## 💻 Developers
 Allay is designed to be compatible with almost any plugin.\
@@ -32,8 +29,6 @@ We use Paper's ChatRenderer to render messages. It means that Allay will not bre
 
 However, we do not support use of any 3rd party chat (including coloring and formatting) plugin.\
 If you are a developer and want to support Allay, feel free to contribute.
-
--------------------
 
 ## 🔮 Cross-Server
 
@@ -50,8 +45,6 @@ Cross-Server feature itself is not included in this repository.\
 
 It is a separate JAR, you put it inside AllayChat/modules.
 
--------------------
-
 ## 🔒 Open Source Does Not Mean Free
 AllayChat is an open source project, but it does not mean that it is free.\
 If you want to use AllayChat, you need to pay for it.\
@@ -59,7 +52,6 @@ If you want to use AllayChat, you need to pay for it.\
 
 No support will be provided for users who do not pay for AllayChat.\
 And no, we do not help you build AllayChat from source if you do not pay for it.
--------------------
 
 ## 🔨 Contributing
 
@@ -72,5 +64,3 @@ We will try to respond as soon as possible.
 Please keep in mind the modularity of this plugin.\
 We are trying to keep the codebase clean and modular, so please try to follow the existing structure.\
 If you are not sure how to do something, feel free to ask our [Discord server](https://discord.gg/ha8Fg9qYRn).
-
--------------------
