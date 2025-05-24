@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.user.ChatUser;
-import net.voxelarc.allaychat.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor

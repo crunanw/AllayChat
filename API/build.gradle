@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'net.voxelarc.allaychat'
@@ -20,4 +21,35 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly ("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT") { exclude group: "com.google.code.gson" }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId 'net.voxelarc.allaychat'
+            artifactId 'api'
+        }
+    }
+    repositories {
+        maven {
+            name = "voxelarcSnapshots"
+            url = uri("https://repo.voxelarc.net/snapshots")
+            credentials {
+                username = System.getenv("VOXELARC_REPO_USER")
+                password = System.getenv("VOXELARC_REPO_PASS")
+            }
+        }
+        /*
+        maven {
+            name = "voxelarcReleases"
+            url = uri("https://repo.voxelarc.net/releases")
+            credentials {
+                username = System.getenv("VOXELARC_REPO_USER")
+                password = System.getenv("VOXELARC_REPO_PASS")
+            }
+        }
+        */
+    }
 }

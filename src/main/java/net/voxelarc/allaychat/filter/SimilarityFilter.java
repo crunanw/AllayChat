@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.filter.ChatFilter;
-import net.voxelarc.allaychat.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.entity.Player;
 
 import java.util.*;

@@ -9,23 +9,23 @@ import lombok.Getter;
 import lombok.Setter;
 import net.voxelarc.allaychat.api.AllayChat;
 import net.voxelarc.allaychat.api.chat.ChatManager;
+import net.voxelarc.allaychat.api.config.YamlConfig;
 import net.voxelarc.allaychat.api.database.Database;
 import net.voxelarc.allaychat.api.filter.ChatFilter;
+import net.voxelarc.allaychat.api.inventory.AllayInventoryHolder;
 import net.voxelarc.allaychat.api.module.ModuleManager;
 import net.voxelarc.allaychat.api.player.PlayerManager;
 import net.voxelarc.allaychat.api.user.UserManager;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import net.voxelarc.allaychat.chat.LocalChatManager;
 import net.voxelarc.allaychat.command.*;
-import net.voxelarc.allaychat.config.YamlConfig;
 import net.voxelarc.allaychat.database.impl.MySQLDatabase;
 import net.voxelarc.allaychat.database.impl.SQLiteDatabase;
 import net.voxelarc.allaychat.filter.*;
-import net.voxelarc.allaychat.inventory.AllayInventoryHolder;
 import net.voxelarc.allaychat.listener.ChatListener;
 import net.voxelarc.allaychat.listener.ConnectionListener;
 import net.voxelarc.allaychat.listener.InventoryListener;
 import net.voxelarc.allaychat.player.LocalPlayerManager;
-import net.voxelarc.allaychat.util.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -47,7 +47,7 @@ public final class AllayChatPlugin extends AllayChat {
     private static AllayChatPlugin instance;
 
     // can not be final due to module accessibility
-    private PlayerManager playerManager = new LocalPlayerManager();
+    private PlayerManager playerManager = new LocalPlayerManager(this);
     private ChatManager chatManager = new LocalChatManager(this);
     private ModuleManager moduleManager = new ModuleManager(this);
     private UserManager userManager = new UserManager();
@@ -181,7 +181,7 @@ public final class AllayChatPlugin extends AllayChat {
         commandManager = BukkitCommandManager.create(this);
 
         commandManager.registerSuggestion(SuggestionKey.of("online-players"),
-                (_sender, _ctx) -> playerManager.getAllPlayers());
+                (_sender, _ctx) -> playerManager.getAllPlayers().stream().toList());
 
         commandManager.registerCommand(
                 new ReloadCommand(this),

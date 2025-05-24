@@ -1,7 +1,7 @@
-package net.voxelarc.allaychat.inventory.impl;
+package net.voxelarc.allaychat.api.inventory.impl;
 
 import net.kyori.adventure.text.Component;
-import net.voxelarc.allaychat.inventory.AllayInventoryHolder;
+import net.voxelarc.allaychat.api.inventory.AllayInventoryHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

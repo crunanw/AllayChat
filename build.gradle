@@ -25,6 +25,7 @@ allprojects {
             url = "https://oss.sonatype.org/content/groups/public/"
         }
         maven { url 'https://repo.triumphteam.dev/snapshots/' }
+        maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
     }
 
     dependencies {
@@ -32,6 +33,7 @@ allprojects {
         annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
         compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
+        compileOnly 'me.clip:placeholderapi:2.11.6'
     }
 
     build {
@@ -41,13 +43,11 @@ allprojects {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 }
 
 dependencies {
     implementation project(':API')
 
-    compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'com.zaxxer:HikariCP:6.3.0'
 

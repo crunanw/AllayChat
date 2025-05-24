@@ -1,12 +1,12 @@
 package net.voxelarc.allaychat.api.chat;
 
 import io.papermc.paper.chat.ChatRenderer;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public interface ChatManager {
 
@@ -29,6 +29,8 @@ public interface ChatManager {
      */
     boolean handleMessage(Player player, String message);
 
+    void handleChatEvent(AsyncChatEvent event);
+
     /**
      * Handles a private message.
      *
@@ -49,7 +51,7 @@ public interface ChatManager {
 
     String getLastMessagedPlayer(String playerName);
 
-    CompletableFuture<Inventory> getInventory(UUID id);
+    Inventory getInventory(UUID id);
 
     void setInventory(UUID id, String playerName, Inventory inventory, InventoryType type);
 

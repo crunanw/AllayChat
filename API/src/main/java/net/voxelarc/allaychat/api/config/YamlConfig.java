@@ -1,4 +1,4 @@
-package net.voxelarc.allaychat.config;
+package net.voxelarc.allaychat.api.config;
 
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;

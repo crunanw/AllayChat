@@ -3,6 +3,7 @@ package net.voxelarc.allaychat.chat;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.papermc.paper.chat.ChatRenderer;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,11 +22,11 @@ import net.luckperms.api.model.user.User;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.chat.ChatFormat;
 import net.voxelarc.allaychat.api.chat.ChatManager;
+import net.voxelarc.allaychat.api.config.YamlConfig;
 import net.voxelarc.allaychat.api.filter.ChatFilter;
+import net.voxelarc.allaychat.api.inventory.impl.AllayInventory;
 import net.voxelarc.allaychat.api.user.ChatUser;
-import net.voxelarc.allaychat.config.YamlConfig;
-import net.voxelarc.allaychat.inventory.impl.AllayInventory;
-import net.voxelarc.allaychat.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Tag;
 import org.bukkit.block.ShulkerBox;
@@ -37,7 +38,6 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -176,13 +176,27 @@ public class LocalChatManager implements ChatManager {
                         Placeholder.unparsed("flag", filter.getClass().getSimpleName()
                                 .replace("Filter", "").toUpperCase())
                 );
-                plugin.getComponentLogger().info(component);
-                Bukkit.broadcast(component, "allaychat.staff");
+                plugin.getPlayerManager().broadcast(component, "allaychat.staff");
                 return true;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public void handleChatEvent(AsyncChatEvent event) {
+        String message = PlainTextComponentSerializer.plainText().serialize(event.message());
+        event.setCancelled(plugin.getChatManager().handleMessage(event.getPlayer(), message));
+        event.renderer(ChatRenderer.viewerUnaware(plugin.getChatManager().getChatRenderer()));
+        event.viewers().removeIf(viewer -> {
+            if (!(viewer instanceof Player player)) return false;
+            ChatUser user = plugin.getUserManager().getUser(player.getUniqueId());
+            // Data not loaded yet
+            if (user == null) return false;
+
+            return user.getIgnoredPlayers().contains(event.getPlayer().getName());
+        });
     }
 
     @Override
@@ -271,8 +285,6 @@ public class LocalChatManager implements ChatManager {
             ChatUtils.sendMessage(player, spyComponent);
         });
 
-        plugin.getComponentLogger().info(spyComponent);
-
         return true;
     }
 
@@ -285,8 +297,7 @@ public class LocalChatManager implements ChatManager {
                 Placeholder.unparsed("player", from.getName())
         );
 
-        plugin.getComponentLogger().info(component);
-        Bukkit.broadcast(component, "allaychat.staff");
+        plugin.getPlayerManager().broadcast(component, "allaychat.staff");
     }
 
     @Override
@@ -295,8 +306,8 @@ public class LocalChatManager implements ChatManager {
     }
 
     @Override
-    public CompletableFuture<Inventory> getInventory(UUID id) {
-        return CompletableFuture.completedFuture(this.inventories.getIfPresent(id));
+    public Inventory getInventory(UUID id) {
+        return this.inventories.getIfPresent(id);
     }
 
     @Override
@@ -413,7 +424,7 @@ public class LocalChatManager implements ChatManager {
             Component component = ChatUtils.format(plugin.getReplacementConfig().getString("inventory.text"), Placeholder.unparsed("player", player.getName()));
 
             UUID uuid = UUID.randomUUID();
-            setInventory(uuid, player.getName(), player.getInventory(), InventoryType.INVENTORY);
+            plugin.getChatManager().setInventory(uuid, player.getName(), player.getInventory(), InventoryType.INVENTORY);
 
             component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/allay inventory %s".formatted(uuid)));
             component = component.hoverEvent(ChatUtils.format(
@@ -438,7 +449,7 @@ public class LocalChatManager implements ChatManager {
         Component component = ChatUtils.format(plugin.getReplacementConfig().getString("enderchest.text"), Placeholder.unparsed("player", player.getName()));
 
         UUID uuid = UUID.randomUUID();
-        setInventory(uuid, player.getName(), player.getEnderChest(), InventoryType.ENDER_CHEST);
+        plugin.getChatManager().setInventory(uuid, player.getName(), player.getEnderChest(), InventoryType.ENDER_CHEST);
 
         component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/allay inventory %s".formatted(uuid)));
         component = component.hoverEvent(ChatUtils.format(
@@ -467,7 +478,7 @@ public class LocalChatManager implements ChatManager {
             ShulkerBox shulkerBox = (ShulkerBox) meta.getBlockState();
 
             UUID uuid = UUID.randomUUID();
-            setInventory(uuid, player.getName(), shulkerBox.getInventory(), InventoryType.SHULKER);
+            plugin.getChatManager().setInventory(uuid, player.getName(), shulkerBox.getInventory(), InventoryType.SHULKER);
 
             Component component = ChatUtils.format(plugin.getReplacementConfig().getString("shulker.text"), Placeholder.unparsed("player", player.getName()));
 

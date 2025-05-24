@@ -4,7 +4,7 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * PlayerManager is an interface that provides methods to manage player interactions.
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface PlayerManager {
 
-    List<String> getAllPlayers();
+    Set<String> getAllPlayers();
 
     void playSound(String playerName, Sound sound);
 
@@ -23,5 +23,9 @@ public interface PlayerManager {
     void showActionBar(String playerName, Component component);
 
     void sendMessage(String playerName, Component component);
+
+    void broadcast(Component component);
+
+    void broadcast(Component component, String permission);
 
 }

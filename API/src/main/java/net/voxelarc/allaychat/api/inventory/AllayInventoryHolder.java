@@ -1,4 +1,4 @@
-package net.voxelarc.allaychat.inventory;
+package net.voxelarc.allaychat.api.inventory;
 
 import org.bukkit.inventory.InventoryHolder;
 

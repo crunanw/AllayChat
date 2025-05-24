@@ -9,7 +9,7 @@ import dev.triumphteam.cmd.core.annotation.Optional;
 import lombok.RequiredArgsConstructor;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.user.ChatUser;
-import net.voxelarc.allaychat.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor

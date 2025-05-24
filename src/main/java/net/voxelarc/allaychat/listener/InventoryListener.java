@@ -1,7 +1,7 @@
 package net.voxelarc.allaychat.listener;
 
 import lombok.RequiredArgsConstructor;
-import net.voxelarc.allaychat.inventory.AllayInventoryHolder;
+import net.voxelarc.allaychat.api.inventory.AllayInventoryHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

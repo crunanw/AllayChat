@@ -7,7 +7,7 @@ import dev.triumphteam.cmd.core.annotation.Default;
 import dev.triumphteam.cmd.core.annotation.Join;
 import lombok.RequiredArgsConstructor;
 import net.voxelarc.allaychat.AllayChatPlugin;
-import net.voxelarc.allaychat.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
