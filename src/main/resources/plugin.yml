@@ -10,3 +10,4 @@ libraries:
   - "com.zaxxer:HikariCP:6.3.0"
   - "org.mariadb.jdbc:mariadb-java-client:3.5.3"
   - "io.lettuce:lettuce-core:6.6.0.RELEASE"
+  - "com.openai:openai-java:2.2.0"
