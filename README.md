@@ -27,7 +27,7 @@ It just complicates the chat system and makes it harder to manage.
 ## 📦 Modules
 AllayChat is a modular plugin.\
 You can install or code modules to your liking.\
-Modules are located in `AllayChat/modules` folder.\
+Modules are located in `AllayChat/modules` folder.
 
 Currently, AllayChat has the following modules:
 - [AllayChat-Multi](https://github.com/VoxelArcStudios/AllayChat-Multi): Cross-server chat support.\
