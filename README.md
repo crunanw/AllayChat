@@ -20,7 +20,47 @@ It just complicates the chat system and makes it harder to manage.
 - Staff chat
 - Private messaging
 - Spy
+- Cross-server chat
+- AI moderation
 - And more
+
+## 📦 Modules
+AllayChat is a modular plugin.\
+You can install or code modules to your liking.\
+Modules are located in `AllayChat/modules` folder.\
+
+Currently, AllayChat has the following modules:
+- [AllayChat-Multi](https://github.com/VoxelArcStudios/AllayChat-Multi): Cross-server chat support.\
+  It allows you to sync chat messages between multiple servers using Redis.
+- [AllayChat-AIFilter](https://github.com/VoxelArcStudios/AllayChat-AIFilter): AI-based chat filter & moderation.\
+  It punishes players based on their messages.
+
+If you are a developer, you can create your own modules.\
+You can find the API in the `Developer` section of this readme.\
+Contact us on [Discord](https://discord.gg/ha8Fg9qYRn) if you want your module to be listed here.
+
+## 🔮 Cross-Server
+
+AllayChat supports cross-server setups.\
+You can use AllayChat to sync chat messages between multiple servers.\
+This is useful for large networks where you want to have a unified chat experience across all servers.
+
+Allay uses Redis (lettuce) to sync chat messages between servers.\
+Thanks to this, AllayChat is very fast and efficient.\
+Many other plugins use Plugin Messaging for cross-server support, but it is no way fast as AllayChat's Redis implementation.
+
+Cross-Server feature itself is not included in this repository.\
+[You can find it in here.](https://github.com/VoxelArcStudios/AllayChat-Multi)
+
+It is a separate JAR, you put it inside AllayChat/modules.
+
+## 🔒 Open Source Does Not Mean Free
+AllayChat is an open source project.\
+Please consider buying it so we can actually continue updating.\
+[Buy it on BuiltByBit](https://google.com)
+
+No support will be provided for users who do not pay for AllayChat.\
+And no, we do not help you build AllayChat from source if you do not pay for it.
 
 ## 💻 Developers
 Allay is designed to be compatible with almost any plugin.\
@@ -46,29 +86,6 @@ dependencies {
     compileOnly 'net.voxelarc.allaychat:api:VERSION'
 }
 ```
-
-## 🔮 Cross-Server
-
-AllayChat supports cross-server setups.\
-You can use AllayChat to sync chat messages between multiple servers.\
-This is useful for large networks where you want to have a unified chat experience across all servers.
-
-Allay uses Redis (lettuce) to sync chat messages between servers.\
-Thanks to this, AllayChat is very fast and efficient.\
-Many other plugins use Plugin Messaging for cross-server support, but it is no way fast as AllayChat's Redis implementation.
-
-Cross-Server feature itself is not included in this repository.\
-[You can find it in here.](https://github.com/VoxelArcStudios/AllayChat-Multi)
-
-It is a separate JAR, you put it inside AllayChat/modules.
-
-## 🔒 Open Source Does Not Mean Free
-AllayChat is an open source project.\
-Please consider buying it so we can actually continue updating.\
-[Buy it on BuiltByBit](https://google.com)
-
-No support will be provided for users who do not pay for AllayChat.\
-And no, we do not help you build AllayChat from source if you do not pay for it.
 
 ## 🔨 Contributing
 
