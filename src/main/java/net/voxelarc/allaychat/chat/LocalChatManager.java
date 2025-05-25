@@ -108,7 +108,9 @@ public class LocalChatManager implements ChatManager {
     public Component formatMessage(Player player, Component message) {
         String groupName = getPlayerGroup(player);
         ChatFormat format = groupFormatMap.get(groupName);
-        if (format == null) return null;
+        if (format == null) {
+            groupFormatMap.get("default");
+        }
 
         String messageContent = PlainTextComponentSerializer.plainText().serialize(message);
         Component messageComponent;
