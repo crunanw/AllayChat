@@ -80,6 +80,12 @@ public class LocalChatManager implements ChatManager {
             groupFormatMap.put(group, new ChatFormat(group, format, hover, click));
         }
 
+        if (groupFormatMap.get("default") == null) {
+            plugin.getLogger().warning("No default chat format found! Using the first defined format as default.");
+            plugin.getLogger().warning("Please define a default format in the config.yml ASAP.");
+            groupFormatMap.put("default", groupFormatMap.values().iterator().next());
+        }
+
         if (plugin.getReplacementConfig().getBoolean("placeholder.enabled")) {
             ConfigurationSection placeholderSection = plugin.getReplacementConfig().getConfigurationSection("placeholder.placeholders");
             for (String key : placeholderSection.getKeys(false)) {
