@@ -57,7 +57,7 @@ It is a separate JAR, you put it inside AllayChat/modules.
 ## 🔒 Open Source Does Not Mean Free
 AllayChat is an open source project.\
 Please consider buying it so we can actually continue updating.\
-[Buy it on BuiltByBit](https://google.com)
+[Buy it on BuiltByBit](https://builtbybit.com/resources/allaychat-superior-chat-plugin.68133/)
 
 No support will be provided for users who do not pay for AllayChat.\
 And no, we do not help you build AllayChat from source if you do not pay for it.
