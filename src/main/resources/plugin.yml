@@ -1,5 +1,5 @@
 name: AllayChat
-version: '1.0.0-SNAPSHOT'
+version: '${version}'
 main: net.voxelarc.allaychat.AllayChatPlugin
 api-version: '1.19'
 authors: [ hyperion ]
