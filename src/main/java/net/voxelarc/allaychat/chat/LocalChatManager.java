@@ -115,7 +115,7 @@ public class LocalChatManager implements ChatManager {
         String groupName = getPlayerGroup(player);
         ChatFormat format = groupFormatMap.get(groupName);
         if (format == null) {
-            groupFormatMap.get("default");
+            format = groupFormatMap.get("default");
         }
 
         String messageContent = PlainTextComponentSerializer.plainText().serialize(message);
