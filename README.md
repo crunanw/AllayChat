@@ -30,14 +30,14 @@ You can install or code modules to your liking.\
 Modules are located in `AllayChat/modules` folder.
 
 Currently, AllayChat has the following modules:
-- [AllayChat-Multi](https://github.com/VoxelArcStudios/AllayChat-Multi): Cross-server chat support.\
+- [AllayChat-Multi](https://github.com/VireonStudios/AllayChat-Multi): Cross-server chat support.\
   It allows you to sync chat messages between multiple servers using Redis.
-- [AllayChat-AIFilter](https://github.com/VoxelArcStudios/AllayChat-AIFilter): AI-based chat filter & moderation.\
+- [AllayChat-AIFilter](https://github.com/VireonStudios/AllayChat-AIFilter): AI-based chat filter & moderation.\
   It punishes players based on their messages.
 
 If you are a developer, you can create your own modules.\
 You can find the API in the `Developer` section of this readme.\
-Contact us on [Discord](https://discord.gg/ha8Fg9qYRn) if you want your module to be listed here.
+Contact us on [Discord](https://discord.gg/uAtnreF6Zu) if you want your module to be listed here.
 
 ## 🔮 Cross-Server
 
@@ -50,17 +50,14 @@ Thanks to this, AllayChat is very fast and efficient.\
 Many other plugins use Plugin Messaging for cross-server support, but it is no way fast as AllayChat's Redis implementation.
 
 Cross-Server feature itself is not included in this repository.\
-[You can find it in here.](https://github.com/VoxelArcStudios/AllayChat-Multi)
+[You can find it in here.](https://github.com/VireonStudios/AllayChat-Multi)
 
 It is a separate JAR, you put it inside AllayChat/modules.
 
-## 🔒 Open Source Does Not Mean Free
+## 🔒 Open Source
 AllayChat is an open source project.\
-Please consider buying it so we can actually continue updating.\
-[Buy it on BuiltByBit](https://builtbybit.com/resources/allaychat-superior-chat-plugin.68133/)
-
-No support will be provided for users who do not pay for AllayChat.\
-And no, we do not help you build AllayChat from source if you do not pay for it.
+Please consider donating so we can actually continue updating.\
+For donations, please contact us from our discord server.
 
 ## 💻 Developers
 Allay is designed to be compatible with almost any plugin.\
@@ -97,4 +94,4 @@ We will try to respond as soon as possible.
 
 Please keep in mind the modularity of this plugin.\
 We are trying to keep the codebase clean and modular, so please try to follow the existing structure.\
-If you are not sure how to do something, feel free to ask our [Discord server](https://discord.gg/ha8Fg9qYRn).
+If you are not sure how to do something, feel free to ask our [Discord server](https://discord.gg/uAtnreF6Zu).
