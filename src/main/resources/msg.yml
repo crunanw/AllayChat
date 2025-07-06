@@ -12,3 +12,6 @@ messages:
 
   toggle-enabled: "<prefix> <white>Private messages are now enabled."
   toggle-disabled: "<prefix> <white>Private messages are now disabled."
+
+  disabled: "<prefix> <red>Since you don't accept private messages, you can't send one."
+  disabled-other: "<prefix> <red><player> does not accept private messages."

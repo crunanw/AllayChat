@@ -127,7 +127,7 @@ public class LocalChatManager implements ChatManager {
         }
 
         if (plugin.getReplacementConfig().getBoolean("mention.enabled"))
-            messageComponent = handleMentions(messageContent, messageComponent);
+            messageComponent = handleMentions(player, messageContent, messageComponent);
 
         if (plugin.getReplacementConfig().getBoolean("placeholder.enabled")) {
             messageComponent = handlePlaceholders(player, messageComponent);
@@ -229,6 +229,21 @@ public class LocalChatManager implements ChatManager {
         if (targetUser == null) {
             ChatUtils.sendMessage(from, ChatUtils.format(
                     plugin.getMessagesConfig().getString("messages.data-not-loaded")
+            ));
+            return false;
+        }
+
+        if (!targetUser.isMsgEnabled() && !from.hasPermission("allaychat.msgtoggle.bypass")) {
+            ChatUtils.sendMessage(from, ChatUtils.format(
+                    plugin.getPrivateMessageConfig().getString("messages.disabled-other"),
+                    Placeholder.unparsed("player", target.getName())
+            ));
+            return false;
+        }
+
+        if (!user.isMsgEnabled() && !from.hasPermission("allaychat.msgtoggle.bypass")) {
+            ChatUtils.sendMessage(from, ChatUtils.format(
+                    plugin.getPrivateMessageConfig().getString("messages.disabled")
             ));
             return false;
         }
@@ -336,11 +351,17 @@ public class LocalChatManager implements ChatManager {
         this.inventories.put(id, new AllayInventory(inventory.getContents(), title, size).getInventory());
     }
 
-    private Component handleMentions(String messageContent, Component messageComponent) {
+    private Component handleMentions(Player player, String messageContent, Component messageComponent) {
         YamlConfig replacementConfig = plugin.getReplacementConfig();
         if (replacementConfig.getBoolean("mention.enabled")) {
             for (String playerName : plugin.getPlayerManager().getAllPlayers()) {
                 if (messageContent.contains(playerName)) {
+                    Player targetPlayer = Bukkit.getPlayerExact(playerName);
+                    if (targetPlayer == null) continue; // Player is not online
+                    ChatUser user = plugin.getUserManager().getUser(targetPlayer.getUniqueId());
+                    if (user == null || !user.isMentionsEnabled()
+                            && !player.hasPermission("allaychat.mention.bypass")) continue; // User data not loaded or mentions disabled
+
                     String soundName = replacementConfig.getString("mention.sound");
                     if (soundName != null && !soundName.isEmpty()) {
                         Sound sound = Sound.sound(Key.key(soundName), Sound.Source.MASTER, 1.0f, 1.0f);
