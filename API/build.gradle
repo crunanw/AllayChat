@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.voxelarc.allaychat'
-version = '1.0.0'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -37,16 +37,16 @@ publishing {
             name = "voxelarcSnapshots"
             url = uri("https://repo.voxelarc.net/snapshots")
             credentials {
-                username = System.getenv("VOXELARC_REPO_USER")
-                password = System.getenv("VOXELARC_REPO_PASS")
+                username = System.getenv("VOXELARC_REPO_USERNAME")
+                password = System.getenv("VOXELARC_REPO_PASSWORD")
             }
         }
         maven {
             name = "voxelarcReleases"
             url = uri("https://repo.voxelarc.net/releases")
             credentials {
-                username = System.getenv("VOXELARC_REPO_USER")
-                password = System.getenv("VOXELARC_REPO_PASS")
+                username = System.getenv("VOXELARC_REPO_USERNAME")
+                password = System.getenv("VOXELARC_REPO_PASSWORD")
             }
         }
     }
