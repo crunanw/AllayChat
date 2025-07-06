@@ -16,7 +16,7 @@ public class InventoryListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
         if (event.getClickedInventory() == null) return;
 
-        if (event.getClickedInventory().getHolder() instanceof AllayInventoryHolder) {
+        if (event.getView().getTopInventory().getHolder() instanceof AllayInventoryHolder) {
             event.setCancelled(true);
         }
     }
@@ -25,7 +25,7 @@ public class InventoryListener implements Listener {
     public void onDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
-        if (event.getInventory().getHolder() instanceof AllayInventoryHolder) {
+        if (event.getView().getTopInventory().getHolder() instanceof AllayInventoryHolder) {
             event.setCancelled(true);
         }
     }
