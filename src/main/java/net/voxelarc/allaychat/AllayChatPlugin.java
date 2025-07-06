@@ -7,6 +7,7 @@ import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.voxelarc.allaychat.api.AllayChat;
 import net.voxelarc.allaychat.api.chat.ChatManager;
 import net.voxelarc.allaychat.api.config.YamlConfig;
@@ -17,6 +18,7 @@ import net.voxelarc.allaychat.api.module.ModuleManager;
 import net.voxelarc.allaychat.api.player.PlayerManager;
 import net.voxelarc.allaychat.api.user.UserManager;
 import net.voxelarc.allaychat.api.util.ChatUtils;
+import net.voxelarc.allaychat.api.util.UpdateChecker;
 import net.voxelarc.allaychat.chat.LocalChatManager;
 import net.voxelarc.allaychat.command.*;
 import net.voxelarc.allaychat.database.impl.MySQLDatabase;
@@ -34,6 +36,9 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -65,6 +70,8 @@ public final class AllayChatPlugin extends AllayChat {
     private final Set<ChatFilter> filters = new HashSet<>();
 
     private BukkitCommandManager<CommandSender> commandManager;
+
+    private UpdateChecker updateChecker;
 
     @Override
     public void onLoad() {
@@ -102,6 +109,27 @@ public final class AllayChatPlugin extends AllayChat {
         registerCommands();
 
         new Metrics(this, 25964);
+
+        (updateChecker = new UpdateChecker(this)).checkUpdates();
+        this.getServer().getPluginManager().registerEvents(new Listener() {
+            @EventHandler
+            public void onJoin(PlayerJoinEvent event) {
+                if (updateChecker.isUpToDate()) return;
+                Player player = event.getPlayer();
+                if (!player.hasPermission("allaychat.updatecheck")) return;
+
+                ChatUtils.sendMessage(player, ChatUtils.format(
+                        "<#34ebd8>Allay <gray>| <white>An update was found!"
+                ));
+                ChatUtils.sendMessage(player, ChatUtils.format(
+                        "<#34ebd8>Allay <gray>| <white>Update message:"
+                ));
+                ChatUtils.sendMessage(player, ChatUtils.format(
+                        "<#34ebd8>Allay <gray>| <#3eeb7f><message>",
+                        Placeholder.parsed("message", updateChecker.getUpdateMessage())
+                ));
+            }
+        }, this);
     }
 
     @Override
