@@ -27,6 +27,7 @@ import net.voxelarc.allaychat.filter.*;
 import net.voxelarc.allaychat.listener.ChatListener;
 import net.voxelarc.allaychat.listener.ConnectionListener;
 import net.voxelarc.allaychat.listener.InventoryListener;
+import net.voxelarc.allaychat.papi.PapiHook;
 import net.voxelarc.allaychat.player.LocalPlayerManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -130,6 +131,8 @@ public final class AllayChatPlugin extends AllayChat {
                 ));
             }
         }, this);
+
+        new PapiHook(this).register();
     }
 
     @Override
