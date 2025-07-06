@@ -33,6 +33,9 @@ mention:
   actionbar: "<#34ebd8><player> <white>mentioned you in chat!" # keep it empty to disable actionbar
   message: "<prefix> <#34ebd8><player> <white>mentioned you in chat!" # keep it empty to disable message
 
+  toggle-enabled: "<prefix> <white>Mentions are now enabled."
+  toggle-disabled: "<prefix> <white>Mentions are now disabled."
+
   title:
     enabled: true
     title: "<#34ebd8><bold>MENTION"

@@ -9,3 +9,6 @@ messages:
   format-self: "<#34ebd8>You <gray>-> <#34ebd8><player><gray>: <white><message>"
   no-reply: "<prefix> <red>You have no one to reply to :("
   spy: "<dark_gray>[<#34ebd8>SPY<dark_gray>] <#34ebd8><from> <gray>-> <#34ebd8><to><gray>: <white><message>"
+
+  toggle-enabled: "<prefix> <white>Private messages are now enabled."
+  toggle-disabled: "<prefix> <white>Private messages are now disabled."

@@ -176,7 +176,8 @@ public final class AllayChatPlugin extends AllayChat {
     public void unregisterCommands() {
         List.of(
                 "allay", "allaychat", "ignore", "spy", "msgspy", "msg",
-                "pm", "tell", "whisper", "r", "reply", "respond", "staffchat", "sc"
+                "pm", "tell", "whisper", "r", "reply", "respond", "staffchat", "sc",
+                "msgtoggle"
         ).forEach(this::unregisterCommand);
     }
 
@@ -224,7 +225,9 @@ public final class AllayChatPlugin extends AllayChat {
                 new InventoryCommand(this),
                 new IgnoreCommand(this),
                 new SpyCommand(this),
-                new ReplyCommand(this)
+                new ReplyCommand(this),
+                new MsgToggleCommand(this),
+                new MentionsToggleCommand(this)
         );
 
         commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, invalidArgumentContext) ->
