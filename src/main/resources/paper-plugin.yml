@@ -1,0 +1,17 @@
+name: AllayChat
+version: '${version}'
+main: net.voxelarc.allaychat.AllayChatPlugin
+loader: net.voxelarc.allaychat.AllayChatLoader
+api-version: '1.19'
+
+authors:
+  - hyperion
+
+dependencies:
+  server:
+    LuckPerms:
+      load: BEFORE
+      required: true
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
