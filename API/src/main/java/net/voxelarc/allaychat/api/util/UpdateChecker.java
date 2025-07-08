@@ -25,7 +25,10 @@ public class UpdateChecker {
 
     public void checkUpdates() {
         String version = plugin.getDescription().getVersion();
-        if (version.endsWith("DEV")) return;
+        if (version.endsWith("DEV")) {
+            plugin.getLogger().info("You are running a developer version of AllayChat, skipping update check.");
+            return;
+        }
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
