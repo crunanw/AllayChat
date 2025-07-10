@@ -15,3 +15,6 @@ dependencies:
     PlaceholderAPI:
       load: BEFORE
       required: true
+    LiteBans:
+      load: BEFORE
+      required: true
