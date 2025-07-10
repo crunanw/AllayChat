@@ -372,21 +372,21 @@ public class LocalChatManager implements ChatManager {
                         String titleText = replacementConfig.getString("mention.title.title");
                         String subtitleText = replacementConfig.getString("mention.title.subtitle");
                         Title title = Title.title(
-                                ChatUtils.format(titleText, Placeholder.unparsed("player", playerName)),
-                                ChatUtils.format(subtitleText, Placeholder.unparsed("player", playerName))
+                                ChatUtils.format(titleText, Placeholder.unparsed("player", player.getName())),
+                                ChatUtils.format(subtitleText, Placeholder.unparsed("player", player.getName()))
                         );
                         plugin.getPlayerManager().showTitle(playerName, title);
                     }
 
                     String actionBar = replacementConfig.getString("mention.actionbar");
                     if (actionBar != null && !actionBar.isEmpty()) {
-                        Component actionBarComponent = ChatUtils.format(actionBar, Placeholder.unparsed("player", playerName));
+                        Component actionBarComponent = ChatUtils.format(actionBar, Placeholder.unparsed("player", player.getName()));
                         plugin.getPlayerManager().showActionBar(playerName, actionBarComponent);
                     }
 
                     String mentionMessage = replacementConfig.getString("mention.message");
                     if (mentionMessage != null && !mentionMessage.isEmpty()) {
-                        Component mentionMessageComponent = ChatUtils.format(mentionMessage, Placeholder.unparsed("player", playerName));
+                        Component mentionMessageComponent = ChatUtils.format(mentionMessage, Placeholder.unparsed("player", player.getName()));
                         plugin.getPlayerManager().sendMessage(playerName, mentionMessageComponent);
                     }
 
