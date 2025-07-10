@@ -17,4 +17,4 @@ dependencies:
       required: true
     LiteBans:
       load: BEFORE
-      required: true
+      required: false
