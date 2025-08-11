@@ -64,8 +64,6 @@ public class ChatUtils {
     public static void sendMessage(Audience player, List<Component> components) {
         components.forEach(s -> ChatUtils.sendMessage(player, s));
     }
-
-    @Deprecated
     public static String removeColorCodes(String text) {
         Matcher hexXMatcher = HEX_COLOR_CODE_X_PATTERN.matcher(text);
         text = hexXMatcher.replaceAll("");

@@ -146,7 +146,7 @@ public class LocalChatManager implements ChatManager {
 
         if (plugin.getReplacementConfig().getBoolean("shulker.enabled"))
             messageComponent = handleShulker(player, messageContent, messageComponent);
-        Component component = ChatUtils.format(PlaceholderAPI.setPlaceholders(player,format.format()), ChatUtils.papiTag(player), Placeholder.component("message", messageComponent));
+        Component component = ChatUtils.format(PlaceholderAPI.setPlaceholders(player,format.format()), Placeholder.component("message", messageComponent));
 
         if (format.hover() != null) {
             List<Component> hoverComponents = new ArrayList<>();
@@ -175,7 +175,7 @@ public class LocalChatManager implements ChatManager {
                 Component component = ChatUtils.format(
                         plugin.getMessagesConfig().getString("messages.message-cancelled-operator"),
                         Placeholder.unparsed("player", player.getName()),
-                        //Placeholder.unparsed("message", ChatUtils.removeColorCodes(message)),
+                        Placeholder.unparsed("message", ChatUtils.removeColorCodes(message)),
                         Placeholder.unparsed("flag", filter.getClass().getSimpleName()
                                 .replace("Filter", "").toUpperCase())
                 );
