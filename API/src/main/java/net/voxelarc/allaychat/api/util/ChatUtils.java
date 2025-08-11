@@ -49,7 +49,7 @@ public class ChatUtils {
 
     public static Component format(String string, TagResolver... placeholders) {
         Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(string);
-        String minimessage = MINI_MESSAGE.serialize(legacy);
+        String minimessage = MINI_MESSAGE.serialize(legacy).replace("\\","");
         return MINI_MESSAGE.deserialize(minimessage, placeholders);
     }
 
