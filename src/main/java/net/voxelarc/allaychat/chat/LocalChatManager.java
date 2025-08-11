@@ -146,17 +146,12 @@ public class LocalChatManager implements ChatManager {
 
         if (plugin.getReplacementConfig().getBoolean("shulker.enabled"))
             messageComponent = handleShulker(player, messageContent, messageComponent);
-
-        Component component = ChatUtils.format(
-                format.format(),
-                ChatUtils.papiTag(player),
-                Placeholder.component("message", messageComponent)
-        );
+        Component component = ChatUtils.format(PlaceholderAPI.setPlaceholders(player,format.format()), Placeholder.component("message", messageComponent));
 
         if (format.hover() != null) {
             List<Component> hoverComponents = new ArrayList<>();
             for (String line : format.hover().message())
-                hoverComponents.add(ChatUtils.format(line, ChatUtils.papiTag(player)));
+                hoverComponents.add(ChatUtils.format(PlaceholderAPI.setPlaceholders(player, line)));
 
             component = component.hoverEvent(
                     Component.join(JoinConfiguration.newlines(), hoverComponents)
