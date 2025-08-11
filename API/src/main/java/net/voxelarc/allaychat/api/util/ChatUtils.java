@@ -9,6 +9,7 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.voxelarc.allaychat.api.AllayChat;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
@@ -47,7 +48,9 @@ public class ChatUtils {
     }
 
     public static Component format(String string, TagResolver... placeholders) {
-        return MINI_MESSAGE.deserialize(string, placeholders);
+        Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(string);
+        String minimessage = MINI_MESSAGE.serialize(legacy).replace("\\", "");
+        return MINI_MESSAGE.deserialize(minimessage, placeholders);
     }
 
     public static List<Component> format(List<String> list, TagResolver... placeholders) {
@@ -62,6 +65,7 @@ public class ChatUtils {
         components.forEach(s -> ChatUtils.sendMessage(player, s));
     }
 
+    @Deprecated
     public static String removeColorCodes(String text) {
         Matcher hexXMatcher = HEX_COLOR_CODE_X_PATTERN.matcher(text);
         text = hexXMatcher.replaceAll("");
@@ -79,8 +83,7 @@ public class ChatUtils {
         return TagResolver.resolver("papi", (argumentQueue, context) -> {
             final String papiPlaceholder = argumentQueue.popOr("papi tag requires an argument").value();
             final String parsedPlaceholder = PlaceholderAPI.setPlaceholders(player, '%' + papiPlaceholder + '%');
-            final Component componentPlaceholder = LegacyComponentSerializer.legacyAmpersand().deserialize(parsedPlaceholder);
-
+            final Component componentPlaceholder = LEGACY.deserialize(parsedPlaceholder);
             return Tag.selfClosingInserting(componentPlaceholder);
         });
     }
