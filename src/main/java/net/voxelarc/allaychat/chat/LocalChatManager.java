@@ -151,7 +151,7 @@ public class LocalChatManager implements ChatManager {
         if (format.hover() != null) {
             List<Component> hoverComponents = new ArrayList<>();
             for (String line : format.hover().message())
-                hoverComponents.add(ChatUtils.format(line, ChatUtils.papiTag(player)));
+                hoverComponents.add(ChatUtils.format(PlaceholderAPI.setPlaceholders(player, line)));
 
             component = component.hoverEvent(
                     Component.join(JoinConfiguration.newlines(), hoverComponents)
