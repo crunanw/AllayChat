@@ -132,9 +132,9 @@ public final class AllayChatPlugin extends AllayChat {
                     ));
                 }
             }, this);
-
-            new PapiHook(this).register();
         }
+        
+        new PapiHook(this).register();
     }
 
     @Override
