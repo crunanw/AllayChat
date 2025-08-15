@@ -1,3 +1,6 @@
+plugin:
+  update-check: true
+
 database:
   type: sqlite # Database type (mysql (works on mariadb as well), sqlite)
 

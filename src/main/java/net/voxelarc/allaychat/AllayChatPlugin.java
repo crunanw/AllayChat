@@ -111,28 +111,30 @@ public final class AllayChatPlugin extends AllayChat {
 
         new Metrics(this, 25964);
 
-        (updateChecker = new UpdateChecker(this)).checkUpdates();
-        this.getServer().getPluginManager().registerEvents(new Listener() {
-            @EventHandler
-            public void onJoin(PlayerJoinEvent event) {
-                if (updateChecker.isUpToDate()) return;
-                Player player = event.getPlayer();
-                if (!player.hasPermission("allaychat.updatecheck")) return;
+        if (this.config.getBoolean("plugin.update-check", true)) {
+            (updateChecker = new UpdateChecker(this)).checkUpdates();
+            this.getServer().getPluginManager().registerEvents(new Listener() {
+                @EventHandler
+                public void onJoin(PlayerJoinEvent event) {
+                    if (updateChecker.isUpToDate()) return;
+                    Player player = event.getPlayer();
+                    if (!player.hasPermission("allaychat.updatecheck")) return;
 
-                ChatUtils.sendMessage(player, ChatUtils.format(
-                        "<#34ebd8>Allay <gray>| <white>An update was found!"
-                ));
-                ChatUtils.sendMessage(player, ChatUtils.format(
-                        "<#34ebd8>Allay <gray>| <white>Update message:"
-                ));
-                ChatUtils.sendMessage(player, ChatUtils.format(
-                        "<#34ebd8>Allay <gray>| <#3eeb7f><message>",
-                        Placeholder.parsed("message", updateChecker.getUpdateMessage())
-                ));
-            }
-        }, this);
+                    ChatUtils.sendMessage(player, ChatUtils.format(
+                            "<#34ebd8>Allay <gray>| <white>An update was found!"
+                    ));
+                    ChatUtils.sendMessage(player, ChatUtils.format(
+                            "<#34ebd8>Allay <gray>| <white>Update message:"
+                    ));
+                    ChatUtils.sendMessage(player, ChatUtils.format(
+                            "<#34ebd8>Allay <gray>| <#3eeb7f><message>",
+                            Placeholder.parsed("message", updateChecker.getUpdateMessage())
+                    ));
+                }
+            }, this);
 
-        new PapiHook(this).register();
+            new PapiHook(this).register();
+        }
     }
 
     @Override
