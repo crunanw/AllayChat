@@ -1,4 +1,4 @@
-plugin:
+settings:
   update-check: true
 
 database:

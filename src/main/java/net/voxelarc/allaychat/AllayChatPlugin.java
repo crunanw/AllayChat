@@ -111,7 +111,7 @@ public final class AllayChatPlugin extends AllayChat {
 
         new Metrics(this, 25964);
 
-        if (this.config.getBoolean("plugin.update-check", true)) {
+        if (this.config.getBoolean("settings.update-check", true)) {
             (updateChecker = new UpdateChecker(this)).checkUpdates();
             this.getServer().getPluginManager().registerEvents(new Listener() {
                 @EventHandler
@@ -133,7 +133,7 @@ public final class AllayChatPlugin extends AllayChat {
                 }
             }, this);
         }
-        
+
         new PapiHook(this).register();
     }
 
