@@ -11,7 +11,7 @@ import net.voxelarc.allaychat.api.util.ChatUtils;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
-@Command(value = "mentionstoggle", alias = "mentiontoggle")
+@Command(value = "mentionstoggle", alias = {"mentiontoggle", "bahsetme"})
 public class MentionsToggleCommand extends BaseCommand {
 
     private final AllayChatPlugin plugin;

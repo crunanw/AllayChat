@@ -13,7 +13,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Command(value = "allay", alias = {"allaychat"})
+@Command(value = "chatinv")
 public class InventoryCommand extends BaseCommand {
 
     private final AllayChatPlugin plugin;

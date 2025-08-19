@@ -179,7 +179,7 @@ public final class AllayChatPlugin extends AllayChat {
         List.of(
                 "allay", "allaychat", "ignore", "spy", "msgspy", "msg",
                 "pm", "tell", "whisper", "r", "reply", "respond", "staffchat", "sc",
-                "msgtoggle"
+                "msgtoggle", "bahsetme", "chatinv"
         ).forEach(this::unregisterCommand);
     }
 

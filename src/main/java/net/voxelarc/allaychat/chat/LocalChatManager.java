@@ -450,7 +450,7 @@ public class LocalChatManager implements ChatManager {
             UUID uuid = UUID.randomUUID();
             plugin.getChatManager().setInventory(uuid, player.getName(), player.getInventory(), InventoryType.INVENTORY);
 
-            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/allay inventory %s".formatted(uuid)));
+            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chatinv inventory %s".formatted(uuid)));
             component = component.hoverEvent(ChatUtils.format(
                     plugin.getReplacementConfig().getString("inventory.hover"),
                     Placeholder.unparsed("player", player.getName())
@@ -475,7 +475,7 @@ public class LocalChatManager implements ChatManager {
         UUID uuid = UUID.randomUUID();
         plugin.getChatManager().setInventory(uuid, player.getName(), player.getEnderChest(), InventoryType.ENDER_CHEST);
 
-        component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/allay inventory %s".formatted(uuid)));
+        component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chatinv inventory %s".formatted(uuid)));
         component = component.hoverEvent(ChatUtils.format(
                 plugin.getReplacementConfig().getString("enderchest.hover"),
                 Placeholder.unparsed("player", player.getName())
@@ -506,7 +506,7 @@ public class LocalChatManager implements ChatManager {
 
             Component component = ChatUtils.format(plugin.getReplacementConfig().getString("shulker.text"), Placeholder.unparsed("player", player.getName()));
 
-            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/allay inventory %s".formatted(uuid)));
+            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/chatinv inventory %s".formatted(uuid)));
             component = component.hoverEvent(ChatUtils.format(
                     plugin.getReplacementConfig().getString("enderchest.hover"),
                     Placeholder.unparsed("player", player.getName())
