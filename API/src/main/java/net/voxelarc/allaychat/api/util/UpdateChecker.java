@@ -24,7 +24,7 @@ public class UpdateChecker {
     private boolean upToDate = true;
 
     public void checkUpdates() {
-        String version = plugin.getDescription().getVersion();
+        String version = plugin.getPluginMeta().getVersion();
         if (version.endsWith("DEV")) {
             plugin.getLogger().info("You are running a developer version of AllayChat, skipping update check.");
             return;
@@ -41,7 +41,7 @@ public class UpdateChecker {
                 this.upToDate = latestVersion.equals(version);
 
                 if (!this.upToDate) {
-                    this.plugin.getLogger().info(String.format("An update was found for %s!", plugin.getDescription().getName()));
+                    this.plugin.getLogger().info(String.format("An update was found for %s!", plugin.getName()));
                     this.plugin.getLogger().info("Update message:");
                     this.plugin.getLogger().info(updateMessage);
                 } else
