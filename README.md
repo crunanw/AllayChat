@@ -1,8 +1,9 @@
 ## What is AllayChat?
+
 🔰 AllayChat is a modern & powerful chat plugin for PaperMC (and it's forks).\
 It allows server owners to create custom chat filters, formats, placeholders and more.
 
-*(Folia support is planned but not implemented yet.)*
+_(Folia support is planned but not implemented yet.)_
 
 ⚠️ Allay does not support chat channels.\
 I have no plans to add it in the future either.\
@@ -10,6 +11,7 @@ I have never seen anyone use it and I don't see a reason to add it.\
 It just complicates the chat system and makes it harder to manage.
 
 ## 🚀 Features
+
 - Custom chat filters
 - Custom chat formats
 - Custom placeholders (replacements)
@@ -25,11 +27,13 @@ It just complicates the chat system and makes it harder to manage.
 - And more
 
 ## 📦 Modules
+
 AllayChat is a modular plugin.\
 You can install or code modules to your liking.\
 Modules are located in `AllayChat/modules` folder.
 
 Currently, AllayChat has the following modules:
+
 - [AllayChat-Multi](https://github.com/VireonStudios/AllayChat-Multi): Cross-server chat support.\
   It allows you to sync chat messages between multiple servers using Redis.
 - [AllayChat-AIFilter](https://github.com/VireonStudios/AllayChat-AIFilter): AI-based chat filter & moderation.\
@@ -55,16 +59,31 @@ Cross-Server feature itself is not included in this repository.\
 It is a separate JAR, you put it inside AllayChat/modules.
 
 ## 🔒 Open Source
+
 AllayChat is an open source project.\
 Please consider donating so we can actually continue updating.\
 For donations, please contact us from our discord server.
 
+## 💰 Sponsors
+
+We greatly appreciate our generous donors who help keep AllayChat development alive! Your support allows us to continue improving and maintaining this plugin.
+
+### Special Thanks to Our Donors
+
+- **CrunaNetwork** - **$5**
+
+### How to Donate
+
+If you'd like to support us, please contact us through our [Discord server](https://discord.gg/uAtnreF6Zu) for donation information.
+
 ## 💻 Developers
+
 Allay is designed to be compatible with almost any plugin.\
 We use Paper's ChatRenderer to render messages. It means that Allay will not break your existing plugins.\
 (as long as your plugin does not do anything weird or outdated)
 
 Developer API
+
 ```gradle
 repositories {
     maven {
