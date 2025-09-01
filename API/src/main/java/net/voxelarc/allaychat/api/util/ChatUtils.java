@@ -9,7 +9,6 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.voxelarc.allaychat.api.AllayChat;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
@@ -35,7 +34,7 @@ public class ChatUtils {
 
     public static final DecimalFormat FORMATTER = (DecimalFormat) NumberFormat.getNumberInstance();
 
-    public static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder().character('&').hexColors().build();
+    public static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
     public static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.legacySection();
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -48,7 +47,8 @@ public class ChatUtils {
     }
 
     public static Component format(String string, TagResolver... placeholders) {
-        Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(string);
+        string = string.replace("§", "&");
+        Component legacy = LEGACY.deserialize(string);
         String minimessage = MINI_MESSAGE.serialize(legacy).replace("\\","");
         return MINI_MESSAGE.deserialize(minimessage, placeholders);
     }
@@ -64,6 +64,7 @@ public class ChatUtils {
     public static void sendMessage(Audience player, List<Component> components) {
         components.forEach(s -> ChatUtils.sendMessage(player, s));
     }
+
     public static String removeColorCodes(String text) {
         Matcher hexXMatcher = HEX_COLOR_CODE_X_PATTERN.matcher(text);
         text = hexXMatcher.replaceAll("");
