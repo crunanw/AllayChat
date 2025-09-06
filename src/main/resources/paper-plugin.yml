@@ -3,6 +3,7 @@ version: '${version}'
 main: net.voxelarc.allaychat.AllayChatPlugin
 loader: net.voxelarc.allaychat.AllayChatLoader
 api-version: '1.19'
+folia-supported: true
 
 authors:
   - hyperion

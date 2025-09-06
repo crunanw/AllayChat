@@ -30,7 +30,7 @@ public class UpdateChecker {
             return;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getAsyncScheduler().runNow(plugin, (task) -> {
             try {
                 HttpsURLConnection con = (HttpsURLConnection) URI.create(URL).toURL().openConnection();
                 con.setUseCaches(false);
