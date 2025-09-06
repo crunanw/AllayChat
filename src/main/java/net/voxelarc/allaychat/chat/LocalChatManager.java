@@ -365,7 +365,7 @@ public class LocalChatManager implements ChatManager {
                     if (targetPlayer == null) continue; // Player is not online
                     ChatUser user = plugin.getUserManager().getUser(targetPlayer.getUniqueId());
                     if (user == null) continue; // User data not loaded or mentions disabled
-                    boolean allow = user.isMentionsEnabled() && (user.isChatEnabled() || player.hasPermission("allaychat.mention.bypass"));
+                    boolean allow = user.isChatEnabled() && (user.isMentionsEnabled() || player.hasPermission("allaychat.mention.bypass"));
 
                     String soundName = replacementConfig.getString("mention.sound");
                     if (soundName != null && !soundName.isEmpty() && allow) {
