@@ -1,5 +1,7 @@
 package net.voxelarc.allaychat;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.exceptions.CommandRegistrationException;
@@ -74,6 +76,9 @@ public final class AllayChatPlugin extends AllayChat {
 
     private UpdateChecker updateChecker;
 
+    private FoliaLib foliaLib;
+    @Getter private PlatformScheduler scheduler;
+
     @Override
     public void onLoad() {
         instance = this;
@@ -83,6 +88,9 @@ public final class AllayChatPlugin extends AllayChat {
 
     @Override
     public void onEnable() {
+        foliaLib = new FoliaLib(this);
+        scheduler = foliaLib.getScheduler();
+
         config.create();
         filterConfig.create();
         messagesConfig.create();

@@ -3,7 +3,6 @@ package net.voxelarc.allaychat.api.util;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.voxelarc.allaychat.api.AllayChat;
-import org.bukkit.Bukkit;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -30,7 +29,7 @@ public class UpdateChecker {
             return;
         }
 
-        Bukkit.getAsyncScheduler().runNow(plugin, (task) -> {
+        plugin.getScheduler().runLaterAsync(() -> {
             try {
                 HttpsURLConnection con = (HttpsURLConnection) URI.create(URL).toURL().openConnection();
                 con.setUseCaches(false);
@@ -49,7 +48,7 @@ public class UpdateChecker {
             } catch (IOException exception) {
                 this.plugin.getLogger().log(Level.WARNING, "Could not check for updates!", exception);
             }
-        });
+        }, 20L);
     }
 
 }

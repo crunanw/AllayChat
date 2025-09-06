@@ -4,14 +4,14 @@ plugins {
 }
 
 group = 'net.voxelarc'
-version = '1.0.3'
+version = '1.1.0'
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'com.gradleup.shadow'
 
     group = 'net.voxelarc'
-    version = '1.0.3'
+    version = '1.1.0'
 
     repositories {
         mavenLocal()
@@ -26,6 +26,10 @@ allprojects {
         }
         maven { url 'https://repo.triumphteam.dev/snapshots/' }
         maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+        maven {
+            name = "tcoded-releases"
+            url = "https://repo.tcoded.com/releases"
+        }
     }
 
     dependencies {
@@ -53,6 +57,7 @@ dependencies {
     compileOnly 'com.zaxxer:HikariCP:6.3.0'
 
     implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation "com.tcoded:FoliaLib:0.5.1"
 
     implementation ("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT") { exclude group: "com.google.code.gson" }
 }
@@ -91,6 +96,7 @@ shadowJar {
 
     relocate 'dev.triumphteam.cmd', 'net.voxelarc.allaychat.libraries.cmd'
     relocate 'org.bstats', 'net.voxelarc.allaychat.libraries.bstats'
+    relocate 'com.tcoded.folialib', 'net.voxelarc.allaychat.libraries.folialib'
 
     from sourceSets.getByName("main").output
     configurations = [project.configurations.getByName("runtimeClasspath")]
