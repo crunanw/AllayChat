@@ -23,7 +23,6 @@ public class ConnectionListener implements Listener {
         Player player = event.getPlayer();
         // Delay the loading of user data to ensure that the player is fully connected
         Bukkit.getAsyncScheduler().runDelayed(plugin, (task) -> {
-            plugin.getLogger().info("Loading user data for " + player.getName());
             plugin.getDatabase().loadPlayerAsync(player.getUniqueId()).whenComplete((user, throwable) -> {
                 if (throwable != null) {
                     // We'll add a dummy user in case of a failure to load the user data
