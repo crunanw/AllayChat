@@ -3,12 +3,14 @@ package net.voxelarc.allaychat.listener;
 import lombok.RequiredArgsConstructor;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.user.ChatUser;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 @RequiredArgsConstructor
@@ -19,24 +21,28 @@ public class ConnectionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getDatabase().loadPlayerAsync(player.getUniqueId()).whenComplete((user, throwable) -> {
-            if (throwable != null) {
-                // We'll add a dummy user in case of a failure to load the user data
-                plugin.getUserManager().addUser(new ChatUser(player.getUniqueId()));
-                plugin.getLogger().log(Level.SEVERE, "Failed to load user data for " + player.getName(), throwable);
-                return;
-            }
+        // Delay the loading of user data to ensure that the player is fully connected
+        Bukkit.getAsyncScheduler().runDelayed(plugin, (task) -> {
+            plugin.getLogger().info("Loading user data for " + player.getName());
+            plugin.getDatabase().loadPlayerAsync(player.getUniqueId()).whenComplete((user, throwable) -> {
+                if (throwable != null) {
+                    // We'll add a dummy user in case of a failure to load the user data
+                    plugin.getUserManager().addUser(new ChatUser(player.getUniqueId()));
+                    plugin.getLogger().log(Level.SEVERE, "Failed to load user data for " + player.getName(), throwable);
+                    return;
+                }
 
-            if (!player.hasPermission("allaychat.staffchat")) {
-                user.setStaffEnabled(false);
-            }
+                if (!player.hasPermission("allaychat.staffchat")) {
+                    user.setStaffEnabled(false);
+                }
 
-            if (!player.hasPermission("allaychat.spy")) {
-                user.setSpyEnabled(false);
-            }
+                if (!player.hasPermission("allaychat.spy")) {
+                    user.setSpyEnabled(false);
+                }
 
-            plugin.getUserManager().addUser(user);
-        });
+                plugin.getUserManager().addUser(user);
+            });
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
     @EventHandler
