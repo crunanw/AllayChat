@@ -7,6 +7,7 @@ import net.voxelarc.allaychat.database.Queries;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -55,11 +56,30 @@ public class MySQLDatabase extends SQLiteDatabase {
         ignoredTable = plugin.getConfig().getString("database.ignored-table", "allaychat_ignored");
 
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
+                Statement statement = connection.createStatement()) {
             statement.executeUpdate(Queries.CREATE_USER_TABLE.getQuery(usersTable));
             statement.executeUpdate(Queries.CREATE_IGNORE_TABLE.getQuery(ignoredTable, usersTable));
+
+            // Check if chatEnabled column exists and add it if it doesn't (migration)
+            migrateChatEnabledColumnMySQL(connection);
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Database thrown an exception!", e);
+        }
+    }
+
+    private void migrateChatEnabledColumnMySQL(Connection connection) {
+        try (PreparedStatement checkStatement = connection
+                .prepareStatement(Queries.CHECK_COLUMN_EXISTS_MYSQL.getQuery(usersTable))) {
+            var resultSet = checkStatement.executeQuery();
+            if (resultSet.next() && resultSet.getInt(1) == 0) {
+                // Column doesn't exist, add it
+                try (Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(Queries.ADD_CHAT_ENABLED_COLUMN.getQuery(usersTable));
+                    plugin.getLogger().info("Added chatEnabled column to " + usersTable + " table for migration.");
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to migrate chatEnabled column!", e);
         }
     }
 

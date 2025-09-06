@@ -22,3 +22,6 @@ messages:
   ignoring: "<prefix> <white>You are ignoring <#34ebd8><player> <white>and you can not send messages to them."
   # Only a thing in single-server instances.
   ignoring-you: "<prefix> <white><#34ebd8><player> <white>is ignoring you. Your message has not been delivered."
+
+  chat-toggle-enabled: "<prefix> <white>Chat is now enabled."
+  chat-toggle-disabled: "<prefix> <white>Chat is now disabled."

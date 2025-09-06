@@ -202,9 +202,11 @@ public class LocalChatManager implements ChatManager {
         event.renderer(ChatRenderer.viewerUnaware(plugin.getChatManager().getChatRenderer()));
         event.viewers().removeIf(viewer -> {
             if (!(viewer instanceof Player player)) return false;
+            if (player.getName().equals(event.getPlayer().getName())) return false;
             ChatUser user = plugin.getUserManager().getUser(player.getUniqueId());
             // Data not loaded yet
             if (user == null) return false;
+            if (!user.isChatEnabled()) return true;
 
             return user.getIgnoredPlayers().contains(event.getPlayer().getName());
         });
@@ -362,16 +364,16 @@ public class LocalChatManager implements ChatManager {
                     Player targetPlayer = Bukkit.getPlayerExact(playerName);
                     if (targetPlayer == null) continue; // Player is not online
                     ChatUser user = plugin.getUserManager().getUser(targetPlayer.getUniqueId());
-                    if (user == null || !user.isMentionsEnabled()
-                            && !player.hasPermission("allaychat.mention.bypass")) continue; // User data not loaded or mentions disabled
+                    if (user == null) continue; // User data not loaded or mentions disabled
+                    boolean allow = user.isMentionsEnabled() && (user.isChatEnabled() || player.hasPermission("allaychat.mention.bypass"));
 
                     String soundName = replacementConfig.getString("mention.sound");
-                    if (soundName != null && !soundName.isEmpty()) {
+                    if (soundName != null && !soundName.isEmpty() && allow) {
                         Sound sound = Sound.sound(Key.key(soundName), Sound.Source.MASTER, 1.0f, 1.0f);
                         plugin.getPlayerManager().playSound(playerName, sound);
                     }
 
-                    if (replacementConfig.getBoolean("mention.title.enabled")) {
+                    if (replacementConfig.getBoolean("mention.title.enabled") && allow) {
                         String titleText = replacementConfig.getString("mention.title.title");
                         String subtitleText = replacementConfig.getString("mention.title.subtitle");
                         Title title = Title.title(
@@ -382,17 +384,18 @@ public class LocalChatManager implements ChatManager {
                     }
 
                     String actionBar = replacementConfig.getString("mention.actionbar");
-                    if (actionBar != null && !actionBar.isEmpty()) {
+                    if (actionBar != null && !actionBar.isEmpty() && allow) {
                         Component actionBarComponent = ChatUtils.format(actionBar, Placeholder.unparsed("player", player.getName()));
                         plugin.getPlayerManager().showActionBar(playerName, actionBarComponent);
                     }
 
                     String mentionMessage = replacementConfig.getString("mention.message");
-                    if (mentionMessage != null && !mentionMessage.isEmpty()) {
+                    if (mentionMessage != null && !mentionMessage.isEmpty() && allow) {
                         Component mentionMessageComponent = ChatUtils.format(mentionMessage, Placeholder.unparsed("player", player.getName()));
                         plugin.getPlayerManager().sendMessage(playerName, mentionMessageComponent);
                     }
 
+                    // Replace all occurrences of the player's name with the mention format no matter the case
                     messageComponent = messageComponent.replaceText(TextReplacementConfig.builder()
                             .matchLiteral(playerName)
                             .replacement(ChatUtils.format(replacementConfig.getString("mention.text"), Placeholder.unparsed("player", playerName)))

@@ -46,6 +46,7 @@ public class PapiHook extends PlaceholderExpansion {
             case "staff_status" -> String.valueOf(user.isStaffEnabled());
             case "spy_status" -> String.valueOf(user.isSpyEnabled());
             case "mention_status" -> String.valueOf(user.isMentionsEnabled());
+            case "chat_status" -> String.valueOf(user.isChatEnabled());
             default -> "Unknown Placeholder";
         };
     }

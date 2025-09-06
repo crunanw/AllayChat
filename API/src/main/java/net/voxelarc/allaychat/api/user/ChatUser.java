@@ -20,5 +20,6 @@ public class ChatUser {
     private boolean spyEnabled = false;
     private boolean staffEnabled = false;
     private boolean mentionsEnabled = true;
+    private boolean chatEnabled = true;
 
 }
