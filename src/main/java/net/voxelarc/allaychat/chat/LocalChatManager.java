@@ -6,6 +6,7 @@ import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -54,6 +55,7 @@ public class LocalChatManager implements ChatManager {
     private final Cache<String, String> lastMessageCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     @Getter private ChatRenderer.ViewerUnaware chatRenderer;
+    @Getter @Setter private boolean chatMuted = false;
 
     @Override
     public void onEnable() {
@@ -197,18 +199,28 @@ public class LocalChatManager implements ChatManager {
 
     @Override
     public void handleChatEvent(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        if (chatMuted && !player.hasPermission("allaychat.bypass.mute")) {
+            event.setCancelled(true);
+            ChatUtils.sendMessage(player, ChatUtils.format(
+                    plugin.getMessagesConfig().getString("messages.chat-muted",
+                            "Could not find messages.chat-muted in your messages config.")
+            ));
+            return;
+        }
+
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        event.setCancelled(plugin.getChatManager().handleMessage(event.getPlayer(), message));
+        event.setCancelled(plugin.getChatManager().handleMessage(player, message));
         event.renderer(ChatRenderer.viewerUnaware(plugin.getChatManager().getChatRenderer()));
         event.viewers().removeIf(viewer -> {
-            if (!(viewer instanceof Player player)) return false;
-            if (player.getName().equals(event.getPlayer().getName())) return false;
-            ChatUser user = plugin.getUserManager().getUser(player.getUniqueId());
+            if (!(viewer instanceof Player target)) return false;
+            if (target.getName().equals(player.getName())) return false;
+            ChatUser user = plugin.getUserManager().getUser(target.getUniqueId());
             // Data not loaded yet
             if (user == null) return false;
             if (!user.isChatEnabled()) return true;
 
-            return user.getIgnoredPlayers().contains(event.getPlayer().getName());
+            return user.getIgnoredPlayers().contains(player.getName());
         });
     }
 

@@ -25,3 +25,9 @@ messages:
 
   chat-toggle-enabled: "<prefix> <white>Chat is now enabled."
   chat-toggle-disabled: "<prefix> <white>Chat is now disabled."
+
+  chat-muted: "<prefix> <red>Chat is currently muted. Only staff members can talk."
+  chat-mute-toggle-enabled: "<prefix> <white>Chat is now muted."
+  chat-mute-toggle-disabled: "<prefix> <white>Chat is now unmuted."
+  chat-mute-broadcast-enabled: "<prefix> <white>Chat is now muted. You can't talk anymore."
+  chat-mute-broadcast-disabled: "<prefix> <white>Chat is now unmuted. You can talk again."
