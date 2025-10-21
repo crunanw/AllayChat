@@ -379,7 +379,7 @@ public class LocalChatManager implements ChatManager {
                     if (user == null) continue; // User data not loaded or mentions disabled
                     boolean allow = user.isChatEnabled()
                             && (user.isMentionsEnabled() || player.hasPermission("allaychat.mention.bypass"))
-                            && !user.getIgnoredPlayers().contains(playerName);
+                            && !user.getIgnoredPlayers().contains(player.getName());
 
                     String soundName = replacementConfig.getString("mention.sound");
                     if (soundName != null && !soundName.isEmpty() && allow) {
