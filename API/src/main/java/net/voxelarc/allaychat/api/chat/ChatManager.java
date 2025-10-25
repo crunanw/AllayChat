@@ -59,6 +59,8 @@ public interface ChatManager {
 
     void setChatMuted(boolean muted);
 
+    Component handleMentions(Player player, String messageContent, Component messageComponent);
+
     enum InventoryType {
         SHULKER,
         INVENTORY,

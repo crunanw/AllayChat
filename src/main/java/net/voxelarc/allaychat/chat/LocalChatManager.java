@@ -129,7 +129,7 @@ public class LocalChatManager implements ChatManager {
         }
 
         if (plugin.getReplacementConfig().getBoolean("mention.enabled"))
-            messageComponent = handleMentions(player, messageContent, messageComponent);
+            messageComponent = plugin.getChatManager().handleMentions(player, messageContent, messageComponent);
 
         if (plugin.getReplacementConfig().getBoolean("placeholder.enabled")) {
             messageComponent = handlePlaceholders(player, messageComponent);
@@ -368,7 +368,8 @@ public class LocalChatManager implements ChatManager {
         this.inventories.put(id, new AllayInventory(inventory.getContents(), title, size).getInventory());
     }
 
-    private Component handleMentions(Player player, String messageContent, Component messageComponent) {
+    @Override
+    public Component handleMentions(Player player, String messageContent, Component messageComponent) {
         YamlConfig replacementConfig = plugin.getReplacementConfig();
         if (replacementConfig.getBoolean("mention.enabled")) {
             for (String playerName : plugin.getPlayerManager().getAllPlayers()) {
@@ -384,7 +385,7 @@ public class LocalChatManager implements ChatManager {
                     String soundName = replacementConfig.getString("mention.sound");
                     if (soundName != null && !soundName.isEmpty() && allow) {
                         Sound sound = Sound.sound(Key.key(soundName), Sound.Source.MASTER, 1.0f, 1.0f);
-                        plugin.getPlayerManager().playSound(playerName, sound);
+                        targetPlayer.playSound(sound);
                     }
 
                     if (replacementConfig.getBoolean("mention.title.enabled") && allow) {
@@ -394,19 +395,19 @@ public class LocalChatManager implements ChatManager {
                                 ChatUtils.format(titleText, Placeholder.unparsed("player", player.getName())),
                                 ChatUtils.format(subtitleText, Placeholder.unparsed("player", player.getName()))
                         );
-                        plugin.getPlayerManager().showTitle(playerName, title);
+                        targetPlayer.showTitle(title);
                     }
 
                     String actionBar = replacementConfig.getString("mention.actionbar");
                     if (actionBar != null && !actionBar.isEmpty() && allow) {
                         Component actionBarComponent = ChatUtils.format(actionBar, Placeholder.unparsed("player", player.getName()));
-                        plugin.getPlayerManager().showActionBar(playerName, actionBarComponent);
+                        targetPlayer.sendActionBar(actionBarComponent);
                     }
 
                     String mentionMessage = replacementConfig.getString("mention.message");
                     if (mentionMessage != null && !mentionMessage.isEmpty() && allow) {
                         Component mentionMessageComponent = ChatUtils.format(mentionMessage, Placeholder.unparsed("player", player.getName()));
-                        plugin.getPlayerManager().sendMessage(playerName, mentionMessageComponent);
+                        ChatUtils.sendMessage(targetPlayer, mentionMessageComponent);
                     }
 
                     // Replace all occurrences of the player's name with the mention format no matter the case
