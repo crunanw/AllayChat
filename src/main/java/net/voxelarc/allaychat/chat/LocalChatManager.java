@@ -125,7 +125,7 @@ public class LocalChatManager implements ChatManager {
         if (player.hasPermission("allaychat.chatcolor")) {
             messageComponent = LegacyComponentSerializer.legacyAmpersand().deserialize(messageContent);
         } else {
-            messageComponent = Component.text(messageContent);
+            messageComponent = Component.text(ChatUtils.MINI_MESSAGE.stripTags(messageContent));
         }
 
         if (plugin.getReplacementConfig().getBoolean("mention.enabled"))
