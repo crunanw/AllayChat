@@ -56,7 +56,7 @@ public class MySQLDatabase extends SQLiteDatabase {
         ignoredTable = plugin.getConfig().getString("database.ignored-table", "allaychat_ignored");
 
         try (Connection connection = getConnection();
-                Statement statement = connection.createStatement()) {
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(Queries.CREATE_USER_TABLE.getQuery(usersTable));
             statement.executeUpdate(Queries.CREATE_IGNORE_TABLE.getQuery(ignoredTable, usersTable));
 
@@ -68,8 +68,7 @@ public class MySQLDatabase extends SQLiteDatabase {
     }
 
     private void migrateChatEnabledColumnMySQL(Connection connection) {
-        try (PreparedStatement checkStatement = connection
-                .prepareStatement(Queries.CHECK_COLUMN_EXISTS_MYSQL.getQuery(usersTable))) {
+        try (PreparedStatement checkStatement = connection.prepareStatement(Queries.CHECK_COLUMN_EXISTS_MYSQL.getQuery(usersTable))) {
             var resultSet = checkStatement.executeQuery();
             if (resultSet.next() && resultSet.getInt(1) == 0) {
                 // Column doesn't exist, add it
