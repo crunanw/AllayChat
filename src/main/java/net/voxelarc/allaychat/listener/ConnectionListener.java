@@ -19,24 +19,27 @@ public class ConnectionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getDatabase().loadPlayerAsync(player.getUniqueId()).whenComplete((user, throwable) -> {
-            if (throwable != null) {
-                // We'll add a dummy user in case of a failure to load the user data
-                plugin.getUserManager().addUser(new ChatUser(player.getUniqueId()));
-                plugin.getLogger().log(Level.SEVERE, "Failed to load user data for " + player.getName(), throwable);
-                return;
-            }
+        // Delay the loading of user data to ensure that the player is fully connected
+        plugin.getScheduler().runLaterAsync(() -> {
+            plugin.getDatabase().loadPlayerAsync(player.getUniqueId()).whenComplete((user, throwable) -> {
+                if (throwable != null) {
+                    // We'll add a dummy user in case of a failure to load the user data
+                    plugin.getUserManager().addUser(new ChatUser(player.getUniqueId()));
+                    plugin.getLogger().log(Level.SEVERE, "Failed to load user data for " + player.getName(), throwable);
+                    return;
+                }
 
-            if (!player.hasPermission("allaychat.staffchat")) {
-                user.setStaffEnabled(false);
-            }
+                if (!player.hasPermission("allaychat.staffchat")) {
+                    user.setStaffEnabled(false);
+                }
 
-            if (!player.hasPermission("allaychat.spy")) {
-                user.setSpyEnabled(false);
-            }
+                if (!player.hasPermission("allaychat.spy")) {
+                    user.setSpyEnabled(false);
+                }
 
-            plugin.getUserManager().addUser(user);
-        });
+                plugin.getUserManager().addUser(user);
+            });
+        }, 20L);
     }
 
     @EventHandler

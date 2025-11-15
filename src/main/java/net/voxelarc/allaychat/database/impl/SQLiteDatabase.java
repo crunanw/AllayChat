@@ -46,6 +46,9 @@ public class SQLiteDatabase implements Database {
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(Queries.CREATE_USER_TABLE.getQuery(usersTable));
             statement.executeUpdate(Queries.CREATE_IGNORE_TABLE.getQuery(ignoredTable, usersTable));
+
+            // Check if chatEnabled column exists and add it if it doesn't (migration)
+            migrateChatEnabledColumn(connection);
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Database thrown an exception!", e);
         }
@@ -54,6 +57,21 @@ public class SQLiteDatabase implements Database {
     @Override
     public void onDisable() {
         saveAllPlayers();
+    }
+
+    private void migrateChatEnabledColumn(Connection connection) {
+        try (PreparedStatement checkStatement = connection.prepareStatement(Queries.CHECK_COLUMN_EXISTS.getQuery(usersTable))) {
+            var resultSet = checkStatement.executeQuery();
+            if (resultSet.next() && resultSet.getInt(1) == 0) {
+                // Column doesn't exist, add it
+                try (Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(Queries.ADD_CHAT_ENABLED_COLUMN.getQuery(usersTable));
+                    plugin.getLogger().info("Added chatEnabled column to " + usersTable + " table for migration.");
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to migrate chatEnabled column!", e);
+        }
     }
 
     @Override
@@ -80,6 +98,14 @@ public class SQLiteDatabase implements Database {
                     user.setStaffEnabled(resultSet.getBoolean("staffEnabled"));
                     user.setMentionsEnabled(resultSet.getBoolean("mentionsEnabled"));
 
+                    // Handle chatEnabled field (might not exist in old databases)
+                    try {
+                        user.setChatEnabled(resultSet.getBoolean("chatEnabled"));
+                    } catch (SQLException e) {
+                        // Column doesn't exist in old database, use default value
+                        user.setChatEnabled(true);
+                    }
+
                     try (PreparedStatement ignoredStatement = connection.prepareStatement(Queries.GET_ALL_IGNORED.getQuery(ignoredTable))) {
                         ignoredStatement.setString(1, uniqueId.toString());
                         var ignoredResultSet = ignoredStatement.executeQuery();
@@ -95,7 +121,8 @@ public class SQLiteDatabase implements Database {
                 return null;
             }
 
-            // If the user is not found in the database, create a new ChatUser with default values
+            // If the user is not found in the database, create a new ChatUser with default
+            // values
             return new ChatUser(uniqueId);
         }, EXECUTOR);
     }
@@ -103,21 +130,25 @@ public class SQLiteDatabase implements Database {
     @Override
     public CompletableFuture<Boolean> savePlayerAsync(ChatUser user) {
         return CompletableFuture.supplyAsync(() -> {
-            try (Connection connection = getConnection();
-                 PreparedStatement statement = connection.prepareStatement(Queries.SAVE_USER.getQuery(usersTable))) {
-                statement.setString(1, user.getUniqueId().toString());
-                statement.setBoolean(2, user.isMsgEnabled());
-                statement.setBoolean(3, user.isSpyEnabled());
-                statement.setBoolean(4, user.isStaffEnabled());
-                statement.setBoolean(5, user.isMentionsEnabled());
-                statement.executeUpdate();
-
-                // Save ignored players
+            try (Connection connection = getConnection()) {
+                // delete all ignored players first to avoid SQLIntegrityConstraintViolationException
                 try (PreparedStatement deleteStatement = connection.prepareStatement(Queries.DELETE_ALL_IGNORED.getQuery(ignoredTable))) {
                     deleteStatement.setString(1, user.getUniqueId().toString());
                     deleteStatement.executeUpdate();
                 }
 
+                // Save user data
+                try (PreparedStatement statement = connection.prepareStatement(Queries.SAVE_USER.getQuery(usersTable))) {
+                    statement.setString(1, user.getUniqueId().toString());
+                    statement.setBoolean(2, user.isMsgEnabled());
+                    statement.setBoolean(3, user.isSpyEnabled());
+                    statement.setBoolean(4, user.isStaffEnabled());
+                    statement.setBoolean(5, user.isMentionsEnabled());
+                    statement.setBoolean(6, user.isChatEnabled());
+                    statement.executeUpdate();
+                }
+
+                // Save ignored players
                 for (String ignoredPlayer : user.getIgnoredPlayers()) {
                     try (PreparedStatement addIgnoredStatement = connection.prepareStatement(Queries.ADD_IGNORED.getQuery(ignoredTable))) {
                         addIgnoredStatement.setString(1, user.getUniqueId().toString());
@@ -136,8 +167,18 @@ public class SQLiteDatabase implements Database {
 
     @Override
     public void saveAllPlayers() {
-        if (plugin.getUserManager().getAllUsers().isEmpty()) return;
+        if (plugin.getUserManager().getAllUsers().isEmpty())
+            return;
 
+        // Delete all ignored players
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(Queries.DELETE_ALL.getQuery(ignoredTable))) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Database thrown an exception!", e);
+        }
+
+        // Save all users with batch
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(Queries.SAVE_USER.getQuery(usersTable))) {
 
@@ -149,19 +190,12 @@ public class SQLiteDatabase implements Database {
                 statement.setBoolean(3, user.isSpyEnabled());
                 statement.setBoolean(4, user.isStaffEnabled());
                 statement.setBoolean(5, user.isMentionsEnabled());
+                statement.setBoolean(6, user.isChatEnabled());
                 statement.addBatch();
             }
 
             statement.executeBatch();
             connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, "Database thrown an exception!", e);
-        }
-
-        // Delete all ignored players
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(Queries.DELETE_ALL.getQuery(ignoredTable))) {
-            statement.executeUpdate();
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Database thrown an exception!", e);
         }

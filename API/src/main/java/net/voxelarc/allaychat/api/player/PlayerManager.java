@@ -1,8 +1,6 @@
 package net.voxelarc.allaychat.api.player;
 
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 
 import java.util.Set;
 
@@ -15,12 +13,6 @@ import java.util.Set;
 public interface PlayerManager {
 
     Set<String> getAllPlayers();
-
-    void playSound(String playerName, Sound sound);
-
-    void showTitle(String playerName, Title title);
-
-    void showActionBar(String playerName, Component component);
 
     void sendMessage(String playerName, Component component);
 

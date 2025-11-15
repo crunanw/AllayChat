@@ -1,9 +1,7 @@
 package net.voxelarc.allaychat.player;
 
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 import net.voxelarc.allaychat.AllayChatPlugin;
 import net.voxelarc.allaychat.api.player.PlayerManager;
 import net.voxelarc.allaychat.api.util.ChatUtils;
@@ -24,30 +22,6 @@ public class LocalPlayerManager implements PlayerManager {
                 .stream()
                 .map(Player::getName)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public void playSound(String playerName, Sound sound) {
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player != null) {
-            player.playSound(sound);
-        }
-    }
-
-    @Override
-    public void showTitle(String playerName, Title title) {
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player != null) {
-            player.showTitle(title);
-        }
-    }
-
-    @Override
-    public void showActionBar(String playerName, Component component) {
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player != null) {
-            player.sendActionBar(component);
-        }
     }
 
     @Override

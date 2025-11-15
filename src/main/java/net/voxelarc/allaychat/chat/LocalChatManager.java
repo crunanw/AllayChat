@@ -6,6 +6,7 @@ import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -54,6 +55,7 @@ public class LocalChatManager implements ChatManager {
     private final Cache<String, String> lastMessageCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     @Getter private ChatRenderer.ViewerUnaware chatRenderer;
+    @Getter @Setter private boolean chatMuted = false;
 
     @Override
     public void onEnable() {
@@ -123,11 +125,11 @@ public class LocalChatManager implements ChatManager {
         if (player.hasPermission("allaychat.chatcolor")) {
             messageComponent = LegacyComponentSerializer.legacyAmpersand().deserialize(messageContent);
         } else {
-            messageComponent = Component.text(messageContent);
+            messageComponent = Component.text(ChatUtils.MINI_MESSAGE.stripTags(messageContent));
         }
 
         if (plugin.getReplacementConfig().getBoolean("mention.enabled"))
-            messageComponent = handleMentions(player, messageContent, messageComponent);
+            messageComponent = plugin.getChatManager().handleMentions(player, messageContent, messageComponent);
 
         if (plugin.getReplacementConfig().getBoolean("placeholder.enabled")) {
             messageComponent = handlePlaceholders(player, messageComponent);
@@ -197,16 +199,28 @@ public class LocalChatManager implements ChatManager {
 
     @Override
     public void handleChatEvent(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        if (chatMuted && !player.hasPermission("allaychat.bypass.mute")) {
+            event.setCancelled(true);
+            ChatUtils.sendMessage(player, ChatUtils.format(
+                    plugin.getMessagesConfig().getString("messages.chat-muted",
+                            "Could not find messages.chat-muted in your messages config.")
+            ));
+            return;
+        }
+
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        event.setCancelled(plugin.getChatManager().handleMessage(event.getPlayer(), message));
+        event.setCancelled(plugin.getChatManager().handleMessage(player, message));
         event.renderer(ChatRenderer.viewerUnaware(plugin.getChatManager().getChatRenderer()));
         event.viewers().removeIf(viewer -> {
-            if (!(viewer instanceof Player player)) return false;
-            ChatUser user = plugin.getUserManager().getUser(player.getUniqueId());
+            if (!(viewer instanceof Player target)) return false;
+            if (target.getName().equals(player.getName())) return false;
+            ChatUser user = plugin.getUserManager().getUser(target.getUniqueId());
             // Data not loaded yet
             if (user == null) return false;
+            if (!user.isChatEnabled()) return true;
 
-            return user.getIgnoredPlayers().contains(event.getPlayer().getName());
+            return user.getIgnoredPlayers().contains(player.getName());
         });
     }
 
@@ -354,7 +368,8 @@ public class LocalChatManager implements ChatManager {
         this.inventories.put(id, new AllayInventory(inventory.getContents(), title, size).getInventory());
     }
 
-    private Component handleMentions(Player player, String messageContent, Component messageComponent) {
+    @Override
+    public Component handleMentions(Player player, String messageContent, Component messageComponent) {
         YamlConfig replacementConfig = plugin.getReplacementConfig();
         if (replacementConfig.getBoolean("mention.enabled")) {
             for (String playerName : plugin.getPlayerManager().getAllPlayers()) {
@@ -362,37 +377,40 @@ public class LocalChatManager implements ChatManager {
                     Player targetPlayer = Bukkit.getPlayerExact(playerName);
                     if (targetPlayer == null) continue; // Player is not online
                     ChatUser user = plugin.getUserManager().getUser(targetPlayer.getUniqueId());
-                    if (user == null || !user.isMentionsEnabled()
-                            && !player.hasPermission("allaychat.mention.bypass")) continue; // User data not loaded or mentions disabled
+                    if (user == null) continue; // User data not loaded or mentions disabled
+                    boolean allow = user.isChatEnabled()
+                            && (user.isMentionsEnabled() || player.hasPermission("allaychat.mention.bypass"))
+                            && !user.getIgnoredPlayers().contains(player.getName());
 
                     String soundName = replacementConfig.getString("mention.sound");
-                    if (soundName != null && !soundName.isEmpty()) {
+                    if (soundName != null && !soundName.isEmpty() && allow) {
                         Sound sound = Sound.sound(Key.key(soundName), Sound.Source.MASTER, 1.0f, 1.0f);
-                        plugin.getPlayerManager().playSound(playerName, sound);
+                        targetPlayer.playSound(sound);
                     }
 
-                    if (replacementConfig.getBoolean("mention.title.enabled")) {
+                    if (replacementConfig.getBoolean("mention.title.enabled") && allow) {
                         String titleText = replacementConfig.getString("mention.title.title");
                         String subtitleText = replacementConfig.getString("mention.title.subtitle");
                         Title title = Title.title(
                                 ChatUtils.format(titleText, Placeholder.unparsed("player", player.getName())),
                                 ChatUtils.format(subtitleText, Placeholder.unparsed("player", player.getName()))
                         );
-                        plugin.getPlayerManager().showTitle(playerName, title);
+                        targetPlayer.showTitle(title);
                     }
 
                     String actionBar = replacementConfig.getString("mention.actionbar");
-                    if (actionBar != null && !actionBar.isEmpty()) {
+                    if (actionBar != null && !actionBar.isEmpty() && allow) {
                         Component actionBarComponent = ChatUtils.format(actionBar, Placeholder.unparsed("player", player.getName()));
-                        plugin.getPlayerManager().showActionBar(playerName, actionBarComponent);
+                        targetPlayer.sendActionBar(actionBarComponent);
                     }
 
                     String mentionMessage = replacementConfig.getString("mention.message");
-                    if (mentionMessage != null && !mentionMessage.isEmpty()) {
+                    if (mentionMessage != null && !mentionMessage.isEmpty() && allow) {
                         Component mentionMessageComponent = ChatUtils.format(mentionMessage, Placeholder.unparsed("player", player.getName()));
-                        plugin.getPlayerManager().sendMessage(playerName, mentionMessageComponent);
+                        ChatUtils.sendMessage(targetPlayer, mentionMessageComponent);
                     }
 
+                    // Replace all occurrences of the player's name with the mention format no matter the case
                     messageComponent = messageComponent.replaceText(TextReplacementConfig.builder()
                             .matchLiteral(playerName)
                             .replacement(ChatUtils.format(replacementConfig.getString("mention.text"), Placeholder.unparsed("player", playerName)))

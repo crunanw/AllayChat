@@ -1,5 +1,6 @@
 package net.voxelarc.allaychat.api;
 
+import com.tcoded.folialib.impl.PlatformScheduler;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import net.voxelarc.allaychat.api.chat.ChatManager;
 import net.voxelarc.allaychat.api.config.YamlConfig;
@@ -55,5 +56,7 @@ public abstract class AllayChat extends JavaPlugin {
     public abstract void setDatabase(Database database);
 
     public abstract UserManager getUserManager();
+
+    public abstract PlatformScheduler getScheduler();
 
 }
