@@ -1,7 +1,7 @@
 flood:
   enabled: true
   max-repeating: 10
-  max-message-length: 50
+  max-message-length: 80
   message: "<prefix> <red>You can not flood the chat."
 
 domain:
@@ -17,7 +17,7 @@ ip:
   message: "<prefix> <red>You can not send IP addresses."
 
 similarity:
-  enabled: true
+  enabled: false
   max-time-between: 60 # in seconds
   distance: 3 # in characters, the distance between the two messages. allay uses levenshtein distance.
   messages-to-check: 5 # the number of messages to check for similarity
@@ -29,7 +29,7 @@ cooldown:
   message: "<prefix> <red>You must wait at least 3 seconds before sending another message."
 
 caps:
-  enabled: true
+  enabled: false
   max-caps: 5 # the maximum number of caps in a message
   message: "<prefix> <red>You are using too much caps."
 
