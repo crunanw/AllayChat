@@ -14,6 +14,16 @@ public class DomainFilter implements ChatFilter {
 
     private final Pattern pattern = Pattern.compile("[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z]{2,}");
 
+    private final Pattern allowedSocials = Pattern.compile(
+            "(?i)\\b(" +
+                    "youtube\\.com|youtu\\.be|" +
+                    "tiktok\\.com|" +
+                    "twitch\\.tv|" +
+                    "kick\\.com|" +
+                    "instagram\\.com|instagr\\.am" +
+                    ")\\b"
+    );
+
     private final AllayChatPlugin plugin;
 
     private boolean enabled = true;
@@ -30,6 +40,10 @@ public class DomainFilter implements ChatFilter {
     public boolean checkMessage(Player player, String message) {
         if (!enabled) return false;
         if (player.hasPermission("allaychat.bypass.domain")) return false;
+
+        if (allowedSocials.matcher(message).find()) {
+            return !player.hasPermission("allaychat.bypass.social");
+        }
 
         if (pattern.matcher(message).find()) {
             ChatUtils.sendMessage(player, blockedMessage);
