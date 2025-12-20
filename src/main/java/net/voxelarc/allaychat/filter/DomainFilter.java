@@ -42,7 +42,11 @@ public class DomainFilter implements ChatFilter {
         if (player.hasPermission("allaychat.bypass.domain")) return false;
 
         if (allowedSocials.matcher(message).find()) {
-            return !player.hasPermission("allaychat.bypass.social");
+            if (!player.hasPermission("allaychat.bypass.social")) {
+                ChatUtils.sendMessage(player, blockedMessage);
+                return true;
+            }
+            return false;
         }
 
         if (pattern.matcher(message).find()) {
